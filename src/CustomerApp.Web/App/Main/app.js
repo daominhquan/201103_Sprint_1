@@ -61,8 +61,8 @@
                     templateUrl: '/App/Main/views/about/about.cshtml',
                     menu: 'About' //Matches to name of 'About' menu in CustomerAppNavigationProvider
                 })
-                .state('customers', {
-                    url: '/customers',
+                .state('Customers', {
+                    url: '/Customers',
                     template: '<customer-list></customer-list>',
                     menu: 'Customers' //Matches to name of 'Customers' menu in CustomerAppNavigationProvider
                 });
