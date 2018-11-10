@@ -7,6 +7,7 @@
             vm.users = [];
 
             function getUsers() {
+                debugger
                 userService.getAll({}).then(function (result) {
                     vm.users = result.data.items;
                 });

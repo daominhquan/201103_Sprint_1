@@ -1,21 +1,21 @@
 ﻿(function () {
-    angular.module('app').controller('app.views.tenants.index', [
-        '$scope', '$uibModal', 'abp.services.app.tenant',
-        function ($scope, $uibModal, tenantService) {
+    angular.module('app').controller('app.views.Customers.index', [
+        '$scope', '$uibModal', 'abp.services.app.customer',
+        function ($scope, $uibModal, customerService) {
             var vm = this;
 
-            vm.tenants = [];
+            vm.customers = [];
 
-            function getTenants() {
-                tenantService.getAll({}).then(function (result) {
-                    vm.tenants = result.data.items;
+            function getCustomers() {
+                customerService.getAll({}).then(function (result) {
+                    vm.customers = result.data.items;
                 });
             }
 
-            vm.openTenantCreationModal = function () {
+            vm.openCustomerCreationModal = function () {
                 var modalInstance = $uibModal.open({
-                    templateUrl: '/App/Main/views/tenants/createModal.cshtml',
-                    controller: 'app.views.tenants.createModal as vm',
+                    templateUrl: '/App/Main/views/Customers/createModal.cshtml',
+                    controller: 'app.views.Customers.createModal as vm',
                     backdrop: 'static'
                 });
 
@@ -24,18 +24,18 @@
                 });
 
                 modalInstance.result.then(function () {
-                    getTenants();
+                    getCustomers();
                 });
             };
 
-            vm.openTenantEditModal = function (tenant) {
+            vm.openCustomerEditModal = function (customer) {
                 var modalInstance = $uibModal.open({
-                    templateUrl: '/App/Main/views/tenants/editModal.cshtml',
-                    controller: 'app.views.tenants.editModal as vm',
+                    templateUrl: '/App/Main/views/Customers/editModal.cshtml',
+                    controller: 'app.views.Customers.editModal as vm',
                     backdrop: 'static',
                     resolve: {
                         id: function () {
-                            return tenant.id;
+                            return customer.id;
                         }
                     }
                 });
@@ -45,29 +45,29 @@
                 });
 
                 modalInstance.result.then(function () {
-                    getTenants();
+                    getCustomers();
                 });
             }
 
-            vm.delete = function (tenant) {
+            vm.delete = function (customer) {
                 abp.message.confirm(
-                    "Delete tenant '" + tenant.name + "'?",
+                    "Delete customer '" + customer.customername + "'?",
                     function (result) {
                         if (result) {
-                            tenantService.delete({ id: tenant.id })
+                            customerService.delete({ id: customer.id })
                                 .then(function () {
-                                    abp.notify.info("Deleted tenant: " + tenant.name);
-                                    getTenants();
+                                    abp.notify.info("Deleted customer: " + customer.customername);
+                                    getCustomers();
                                 });
                         }
                     });
             }
 
             vm.refresh = function() {
-                getTenants();
+                getCustomers();
             };
 
-            getTenants();
+            getCustomers();
         }
     ]);
 })();

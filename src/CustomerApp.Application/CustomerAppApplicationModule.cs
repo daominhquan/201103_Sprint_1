@@ -9,6 +9,10 @@ using CustomerApp.Authorization.Roles;
 using CustomerApp.Authorization.Users;
 using CustomerApp.Roles.Dto;
 using CustomerApp.Users.Dto;
+using System.Reflection;
+using Abp.AutoMapper;
+using HuflitBigPrj.Customers.DTO;
+using CustomerApp.Models;
 
 namespace CustomerApp
 {
@@ -17,6 +21,14 @@ namespace CustomerApp
     {
         public override void PreInitialize()
         {
+            Configuration.Modules.AbpAutoMapper().Configurators.Add(mapper =>
+            {
+                mapper.CreateMap<CreateCustomerInput, Customer>().ReverseMap();
+                mapper.CreateMap<GetCustomerOutput, Customer>().ReverseMap();
+                mapper.CreateMap<GetCustomerInput, Customer>().ReverseMap();
+                mapper.CreateMap<DeleteCustomergInput, Customer>().ReverseMap();
+                mapper.CreateMap<UpdateCustomerInput, Customer>().ReverseMap();
+            }); 
         }
 
         public override void Initialize()
