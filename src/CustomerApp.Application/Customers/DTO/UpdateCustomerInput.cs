@@ -9,7 +9,7 @@ namespace HuflitBigPrj.Customers.DTO
     public class UpdateCustomerInput
     {
         public int Id { get; set; }
-        public string TenKH { get; set; }
-        public int SoDienThoai { get; set; }
+        public string CustomerName { get; set; }
+        public int PhoneNumber { get; set; }
     }
 }

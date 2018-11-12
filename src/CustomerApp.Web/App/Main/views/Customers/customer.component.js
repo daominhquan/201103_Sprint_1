@@ -19,10 +19,9 @@
 
         //get all customer data from database
         function getCustomers() {
-            debugger
-            customerService.getAll({})
+            customerService.listAll()
                 .then(function (result) {
-                    vm.customers = result.data.items;
+                    vm.customers = result.data;
                 });
         }
         getCustomers();
@@ -32,6 +31,7 @@
             $('#myModal').modal('show')
             vm.showSubmit = true;
             vm.showEdit = false;
+            vm.showID = false;
             vm.customer.CustomerName = '';
             vm.customer.PhoneNumber = '';
         }
@@ -41,6 +41,9 @@
             vm.showSubmit = false;
             vm.showEdit = true;
             vm.entity = data;
+            vm.customer.Id = data.id;
+            vm.customer.CustomerName = data.customerName;
+            vm.customer.PhoneNumber = data.phoneNumber;
         }
 
         //save data
@@ -48,31 +51,56 @@
             abp.ui.setBusy();
             customerService.create(vm.customer)
                 .then(function () {
-                    abp.notify.info(App.localize('SavedSuccessfully'));
+                    abp.notify.info(App.localize('Thêm thành công'));
+                    $('#myModal').modal('hide');
                     $uibModalInstance.close();
                 }).finally(function () {
                     abp.ui.clearBusy();
                     getCustomers();
                 });
         };
+
+
+
+        vm.edit = function (data) {
+            abp.ui.setBusy();
+            customerService.update(vm.customer)
+                .then(function () {
+                    abp.notify.info(App.localize('Sửa thành công '));
+                    $('#myModal').modal('hide'); 
+                    $uibModalInstance.close();
+                }).finally(function () {
+                    abp.ui.clearBusy();
+                    getCustomers();
+                });
+        };
+
+
+
         vm.cancel = function () {
             $uibModalInstance.dismiss({});
         };
         vm.refresh = function () {
             getCustomers();
         };
-        vm.delete = function (customer) {
+        vm.delete = function (id,customerName) {
             abp.message.confirm(
-                "Delete customer '" + customer.CustomerName + "'?",
+                "Xóa Customer '" + customerName + "'?",
                 function (result) {
                     if (result) {
-                        customerService.delete({ id: customer.id })
+                        var x = { id };
+                        abp.ui.setBusy();
+                        customerService.delete(x)
                             .then(function () {
-                                abp.notify.info("Deleted customer: " + customer.CustomerName);
+                                abp.notify.info(App.localize('Delete Customer ' + customerName +' Thành công'));
+                                $uibModalInstance.close();
+                            }).finally(function () {
+                                abp.ui.clearBusy();
                                 getCustomers();
-                            });
+                            })
                     }
                 });
+            
         }
 
     }

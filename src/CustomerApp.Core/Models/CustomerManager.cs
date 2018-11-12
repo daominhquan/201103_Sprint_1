@@ -33,7 +33,7 @@ namespace CustomerApp.Models
         public void Delete(int id)
         {
             var khachhang = _repositoryKhachHang.FirstOrDefault(x => x.Id == id);
-            if (khachhang != null)
+            if (khachhang == null)
             {
                 throw new UserFriendlyException("No Data Found");
             }
